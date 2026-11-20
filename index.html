@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nathaniel — Projects</title>
+<title>Nathaniel</title>
 <style>
   :root {
     --bg: #fff; --line: #e5e5e5; --text: #111;
@@ -45,15 +45,49 @@
   .tags { font-size: 13px; color: var(--muted); }
   .tags span + span::before { content: " · "; }
   footer { color: var(--muted); font-size: 13px; margin-top: 48px; }
+
+  .site { display: flex; justify-content: space-between; align-items: center; margin-bottom: 48px; }
+  .site .name { font-weight: 600; color: var(--text); }
+  .site nav a { color: var(--muted); margin-left: 20px; }
+  .site nav a.on { color: var(--text); }
+  .page[hidden] { display: none; }
+  .avatar {
+    width: 160px; height: 160px; border-radius: 8px; object-fit: cover;
+    image-rendering: pixelated; border: 1px solid var(--line); display: block; margin-bottom: 20px;
+  }
+  .home p { max-width: 560px; }
+  .home ul { padding-left: 18px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Nathaniel</h1>
-  <p class="sub">I build apps, tools, and games — mostly for fun and to learn.</p>
-  <a href="https://github.com/namnathaniel-tech">GitHub</a>
+  <header class="site">
+    <a class="name" href="#home">Nathaniel</a>
+    <nav>
+      <a href="#home" data-page="home">Home</a>
+      <a href="#projects" data-page="projects">Projects</a>
+      <a href="https://github.com/namnathaniel-tech">GitHub</a>
+    </nav>
+  </header>
 
-  <nav class="tabs" role="tablist">
+  <section class="page home" id="home">
+    <img class="avatar" src="avatar.png" alt="My avatar" onerror="this.remove()">
+    <h1>Hi, I'm Nathaniel.</h1>
+    <p class="sub">I build apps, tools, and games — mostly for fun and to learn.</p>
+    <p>I like making things I actually use: a notes app for my own vault, a macro recorder for my Mac, a downloader for the webtoons I read, and a Discord bot full of games for my friends.</p>
+    <p>Stuff I've worked with:</p>
+    <ul>
+      <li>JavaScript, Node.js, React</li>
+      <li>Java and Spring Boot</li>
+      <li>Swift (macOS apps)</li>
+      <li>Python and PyTorch</li>
+    </ul>
+    <p><a href="#projects">See my projects →</a></p>
+  </section>
+
+  <section class="page" id="projects-page" hidden>
+  <h1>Projects</h1>
+  <nav class="tabs" role="tablist" style="margin-top:16px">
     <button role="tab" data-filter="all" aria-selected="true">All</button>
     <button role="tab" data-filter="apps">Apps</button>
     <button role="tab" data-filter="utilities">Utilities</button>
@@ -116,10 +150,21 @@
       <div class="tags"><span>Python</span><span>PyTorch</span><span>Flask</span></div>
     </div>
   </section>
+  </section>
 
   <footer>© 2026 Nathaniel</footer>
 </main>
 <script>
+  function route() {
+    const page = location.hash === '#projects' ? 'projects' : 'home';
+    document.getElementById('home').hidden = page !== 'home';
+    document.getElementById('projects-page').hidden = page !== 'projects';
+    document.querySelectorAll('[data-page]').forEach(a => a.classList.toggle('on', a.dataset.page === page));
+    window.scrollTo(0, 0);
+  }
+  addEventListener('hashchange', route);
+  route();
+
   const tabs = document.querySelectorAll('.tabs button');
   const projects = document.querySelectorAll('.project');
   tabs.forEach(tab => {
